@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head><meta charset="utf-8" />
-<title>Lab4_JaredNielsen_Final</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>cancer-detection</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 
 <style type="text/css">
@@ -11771,6 +11771,23 @@ div#notebook {
   <div tabindex="-1" id="notebook" class="border-box-sizing">
     <div class="container" id="notebook-container">
 
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Cancer-Detection-via-Image-Segmentation">Cancer Detection via Image Segmentation<a class="anchor-link" href="#Cancer-Detection-via-Image-Segmentation">&#182;</a></h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><img src="http://liftothers.org/dokuwiki/lib/exe/fetch.php?media=cs501r_f2016:screen_shot_2017-10-10_at_10.11.55_am.png" alt=""></p>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[1]:</div>
@@ -11809,15 +11826,15 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Cancer-Detection-via-Image-Segmentation">Cancer Detection via Image Segmentation<a class="anchor-link" href="#Cancer-Detection-via-Image-Segmentation">&#182;</a></h1>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p><img src="http://liftothers.org/dokuwiki/lib/exe/fetch.php?media=cs501r_f2016:screen_shot_2017-10-10_at_10.11.55_am.png" alt=""></p>
+<p>Here we train a deep network to segment images into cancerous and non-cancerous regions. White portions correspond to cancerous classifications, and black portions are predicted non-cancerous.</p>
+<ul>
+<li>Model Definition  </li>
+<li>Helper Methods (skip)  </li>
+<li>Training the Model</li>
+<li>Intermediate Predictions</li>
+<li>Final Predictions</li>
+<li>Training Stats</li>
+</ul>
 
 </div>
 </div>
@@ -12103,44 +12120,15 @@ div#notebook {
 </div>
 
 </div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">print_memory</span><span class="p">()</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>0.0 GB
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Unhandled exceptions cause a memory leak. Wrap expensive model creation in try-except. 
+<h2 id="Training-the-Model">Training the Model<a class="anchor-link" href="#Training-the-Model">&#182;</a></h2><p>Unhandled exceptions cause a memory leak. Wrap expensive model creation in try-except. 
 Call <code>gc.collect()</code> for eager garbage collection. 
 <code>torch.cuda.memory_allocated(0)/1e9</code> gives the memory GBs used.</p>
+<p>This is difficult because the model takes about 4GB in GPU memory, and Jupyter notebooks cache data aggressively. So we wrap our expensive operations in function calls and catch exceptions to prevent memory leaks.</p>
+<p>Below we see the network train over 10 epochs, outputting a sample image and its prediction compared with the ground truth. This lets us track the "learning progress".</p>
 
 </div>
 </div>
@@ -12968,38 +12956,14 @@ Call <code>gc.collect()</code> for eager garbage collection.
 </div>
 
 </div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">gc</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
-</pre></div>
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Test-Time">Test Time<a class="anchor-link" href="#Test-Time">&#182;</a></h2><p>We choose a test image, never before seen to the network, and compare the prediction with the ground truth. It identifies the cancerous region quite well, but doesn't quite construct the smooth shape that we are comparing against. Is this good enough? Depends on the domain and the specific problem to solve.</p>
 
 </div>
 </div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt output_prompt">Out[13]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>12899</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
@@ -13109,68 +13073,11 @@ Call <code>gc.collect()</code> for eager garbage collection.
 </div>
 
 </div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">objective</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">()</span>
-
-<span class="n">y_truth_np</span> <span class="o">=</span> <span class="o">-</span><span class="mi">100</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span><span class="mi">512</span><span class="p">,</span><span class="mi">512</span><span class="p">))</span>
-<span class="n">y_hat_np</span> <span class="o">=</span> <span class="mi">100</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span>
-    <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">512</span><span class="p">,</span><span class="mi">512</span><span class="p">)),</span>
-    <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">512</span><span class="p">,</span><span class="mi">512</span><span class="p">))</span>
-<span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-
-<span class="c1"># y_truth_np = np.array([</span>
-<span class="c1">#     [0, 0],</span>
-<span class="c1">#     [0, 0]</span>
-<span class="c1"># ]).reshape(1, 2, 2)</span>
-<span class="c1"># y_hat_np = np.array([</span>
-<span class="c1">#         [[1,1],</span>
-<span class="c1">#          [1,1]],</span>
-<span class="c1">#         [[0,0],</span>
-<span class="c1">#          [0,0]]</span>
-<span class="c1"># ]).reshape(1, 2, 2, 2)</span>
-<span class="n">y_truth</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">(</span><span class="n">y_truth_np</span><span class="p">)</span><span class="o">.</span><span class="n">long</span><span class="p">()</span>
-<span class="n">y_hat</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">y_hat_np</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">()</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="n">y_hat</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">y_truth</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-
-<span class="n">loss</span> <span class="o">=</span> <span class="n">objective</span><span class="p">(</span><span class="n">y_hat</span><span class="p">,</span> <span class="n">y_truth</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">loss</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>torch.Size([1, 2, 512, 512]) torch.Size([1, 512, 512])
-tensor(0.)
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>The initial classifications are either all 1's or all 0's. The softmax classifications are all close to each other for related pixels, which isn't surprising, but it's not learning at all. Classsification accuracy stays the same.</p>
-
+<h2 id="Training-Stats">Training Stats<a class="anchor-link" href="#Training-Stats">&#182;</a></h2>
 </div>
 </div>
 </div>
@@ -13258,16 +13165,6 @@ tensor(0.)
 </div>
 </div>
 
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Random Init Loss: 0.73<br>
-Random Init Acc: 0.48</p>
-
-</div>
-</div>
 </div>
     </div>
   </div>
