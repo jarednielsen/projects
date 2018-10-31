@@ -1,5 +1,6 @@
 # Jared Nielsen's Projects
 
+[Generative Adversarial Networks](/wgan-gp.html)
 [Text Generation](/char-rnn.html)
 [Style Transfer](/style-transfer.html)  
 [Deep Learning Cancer Detection](/cancer-detection.html)  
